@@ -6,7 +6,7 @@
 file_put_contents("/home/bricflrb/public_html/SiT_3/connections.txt",$_SERVER['REMOTE_ADDR']."\n", FILE_APPEND | LOCK_EX);
   
 
-  $conn = mysqli_connect( "mysql.ct8.pl" , "m30648_bricflrb", "v+NFk0NPmMT!" , "m30648_bricflrb");
+  $conn = mysqli_connect( "localhost" , "db name", "db password" , "db login");
   
   if(!$conn) {
     //include("site/maint.php");
