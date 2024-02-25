@@ -1,84 +1,118 @@
 <?php
-  include('SiT_3/config.php');
-  include('SiT_3/header.php');
-  
-  if(!$loggedIn) {header("Location: index");}
-  
-  $error = array();
-  if($power >= 1) {
-    if(isset($_GET['id'])) {
-      if(isset($_POST['submit'])) {
-        if(isset($_POST['note']) && strlen($_POST['note']) > 1) {
-          if(isset($_POST['length']) && $_POST['length'] >= 0 && $_POST['length'] != null) {
-            $user = mysqli_real_escape_string($conn,$_GET['id']);
+include('SiT_3/config.php');
+include('SiT_3/header.php');
+
+if (!$loggedIn) {
+    header("Location: index");
+}
+
+$error = array();
+if ($power >= 1) {
+    if (isset($_GET['id'])) {
+        if (isset($_POST['submit'])) {
+            $user = mysqli_real_escape_string($conn, $_GET['id']);
             $admin = $_SESSION['id'];
-            $note = str_replace("'","\'",$_POST['note']);
-            $length = mysqli_real_escape_string($conn,$_POST['length']);
-            $banSQL = "INSERT INTO `moderation` (`id`,`user_id`,`admin_id`,`admin_note`,`issued`,`length`,`active`) VALUES (NULL ,'$user','$admin','$note', '$curDate','$length','yes')";
+            $note = isset($_POST['no_moderation_note']) ? '' : str_replace("'", "\'", $_POST['note']);
+            $length = mysqli_real_escape_string($conn, $_POST['length']);
+            $offensiveContent = '';
+
+            if (isset($_POST['forum_post_id']) && is_numeric($_POST['forum_post_id'])) {
+                $forumPostId = mysqli_real_escape_string($conn, $_POST['forum_post_id']);
+
+                // Fetch the forum post details
+                $forumPostSQL = "SELECT title, body, date FROM `forum_threads` WHERE id = '$forumPostId'";
+                $forumPostResult = $conn->query($forumPostSQL);
+
+                if ($forumPostResult && $forumPostResult->num_rows > 0) {
+                    $forumPostRow = $forumPostResult->fetch_assoc();
+                    $offensiveContent = 'Title: ' . $forumPostRow['title'] . PHP_EOL .
+                        'Body: ' . $forumPostRow['body'] . PHP_EOL .
+                        'Date: ' . $forumPostRow['date'];
+                }
+            } elseif (isset($_POST['subtalk_id']) && is_numeric($_POST['subtalk_id'])) {
+                $subtalkId = mysqli_real_escape_string($conn, $_POST['subtalk_id']);
+
+                // Fetch the subtalk details
+                $subtalkSQL = "SELECT name, description FROM `forum_boards` WHERE id = '$subtalkId'";
+                $subtalkResult = $conn->query($subtalkSQL);
+
+                if ($subtalkResult && $subtalkResult->num_rows > 0) {
+                    $subtalkRow = $subtalkResult->fetch_assoc();
+                    $offensiveContent = 'Subtalk Name: ' . $subtalkRow['name'] . PHP_EOL .
+                        'Description: ' . $subtalkRow['description'];
+                }
+            }
+
+            $offensiveContent .= isset($_POST['offensive_content']) ? ($_POST['offensive_content'] . PHP_EOL) : '';
+
+            $banSQL = "INSERT INTO `moderation` (`id`,`user_id`,`admin_id`,`admin_note`,`issued`,`length`,`active`,`offensive_content`) VALUES (NULL ,'$user','$admin','$note', '$curDate','$length','yes', '$offensiveContent')";
             $ban = $conn->query($banSQL);
-            
-            $action = 'Banned user'.$user.' for '.$length.' minutes';
+
+            $action = 'Banned user' . $user . ' for ' . $length . ' minutes';
             $date = date('d-m-Y H:i:s');
             $adminSQL = "INSERT INTO `admin` (`id`,`admin_id`,`action`,`time`) VALUES (NULL ,  '$admin',  '$action',  '$date')";
             $admin = $conn->query($adminSQL);
-            
-            header("location: index");
-          } else {
-            $error[] = "Invalid ban length";
-          }
-        } else {
-          $error[] = "Please include a moderator note";
-        }
-      }
-    } else {
-      $error[] = 'Invalid user ID';
-    }
-  } else {
-    header("location: index");
-  }
 
+            header("location: index");
+        }
+    } else {
+        $error[] = 'Invalid user ID';
+    }
+} else {
+    header("location: index");
+}
 ?>
+
 <!DOCTYPE html>
-  <head>
+<head>
     <title>Ban User</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <div id="body">
-      <div id="box" style="padding:10px;">
-        <?php
-        if(!empty($error)) {
-          echo '<div style="background-color:#EE3333;margin:10px;padding:5px;color:white;">';
-          foreach($error as $errno) {
-            echo $errno."<br>";
-          } 
-          echo '</div>';
-        }
-        if(isset($_POST['submit']) && empty($error)) {
-          echo '<h3>User has been banned</h3>';
-        }
-        ?>
-        <form action="" method="POST">
-          Ban user <?php echo $_GET['id']; ?><br>
-          <label>Moderator Note:</label><br>
-          <textarea name="note" style="width:300px;height:140px;"></textarea>
-          <br>
-          <label>Ban Length (Minutes):</label>
-          <input type="text" name="length"><br>
-          <input type="submit" name="submit" value="Ban User">
-        </form>
-        
-     
-        <ul>
-          Ban Length 
-<li>• 0 (Warning) </li>
-<li>• 60 (1 hour)  </li>
-<li>• 1440 (1 day) </li>
-<li>• 4320 (3 days)</li>
-<li>• 10080 (1 week)</li> 
-<li>• 20160 (2 weeks)</li>   
-<li>• 2147483647 (Forever)</li>            
-</ul>
-      </div>
+        <div id="box" style="padding:10px;">
+            <?php
+            if (!empty($error)) {
+                echo '<div style="background-color:#EE3333;margin:10px;padding:5px;color:white;">';
+                foreach ($error as $errno) {
+                    echo $errno . "<br>";
+                }
+                echo '</div>';
+            }
+            if (isset($_POST['submit']) && empty($error)) {
+                echo '<h3>User has been banned</h3>';
+            }
+            ?>
+            <form action="" method="POST">
+                Ban user <?php echo $_GET['id']; ?><br>
+                <label>Moderator Note:</label><br>
+                <textarea name="note" style="width:300px;height:140px;"></textarea>
+                <br>
+                <input type="checkbox" name="no_moderation_note" value="1"> No Moderation Note<br>
+                <label>Offensive Content (Optional):</label><br>
+                <textarea name="offensive_content" style="width:300px;height:140px;"><?php echo $content; ?></textarea>
+                <br>
+                <label>Forum Post ID (Optional):</label>
+                <input type="text" name="forum_post_id"><br>
+                <label>Subtalk ID (Optional):</label>
+                <input type="text" name="subtalk_id"><br>
+                <label>Ban Length (Minutes):</label>
+                <input type="text" name="length"><br>
+                <input type="submit" name="submit" value="Ban User">
+            </form>
+
+            <ul>
+                Ban Length
+                <li>• 0 (Warning) </li>
+                <li>• 60 (1 hour) </li>
+                <li>• 1440 (1 day) </li>
+                <li>• 4320 (3 days)</li>
+                <li>• 10080 (1 week)</li>
+                <li>• 20160 (2 weeks)</li>
+                <li>• 2147483647 (Forever)</li>
+            </ul>
+        </div>
     </div>
-  </body>
+</body>
+
 </html>
