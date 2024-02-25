@@ -5,7 +5,7 @@ if ($load[0] > 18) {
 <!DOCTYPE html>
   <head>
     <title>Uh oh!</title>
-    <link rel="icon" href="http://www.brick-hill.com/assets/BH_favicon.png">
+    <link rel="icon" href="/assets/BH_favicon.png">
     <link rel="stylesheet" href="/style.css?r=<?php echo rand(10000,1000000) ?>" type="text/css">
   </head>
   <body>
@@ -153,7 +153,7 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
     <?php
   }
   ?>
-    <link rel="icon" href="http://www.brick-hill.com/assets/BH_favicon.png">
+    <link rel="icon" href="/assets/BH_favicon.png">
     <link rel="stylesheet" href="/style.css?r=<?php echo rand(10000,1000000) ?>" type="text/css">
   <?php
   if ($theme == 1) {
@@ -181,15 +181,14 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
   <body>
     <div id="header">
       <div id="banner">
-  <?php if($loggedIn) {echo '<div id="welcome"><a class="nav" href="http://www.brick-hill.com">Welcome, '. $userRow->{'username'}.'</a></div>';} ?>
+  <?php if($loggedIn) {echo '<div id="welcome"><a class="nav" href="/">Welcome, '. $userRow->{'username'}.'</a></div>';} ?>
         <div id="info" <?php if(!$loggedIn) {echo 'style="visibility:hidden;"';} ?> >
           <span style="display:inline-block;float: left;margin-left: -5px;">
             <ul>
-              <li><a class="nav" href="/money" title="bucks"><i class="fa fa-money"></i> <?php if($loggedIn) {echo number_format($userRow->{'bucks'});} ?></a></li>
-              <li><a class="nav" href="/money" title="bits"><i class="fa fa-circle"></i> <?php if($loggedIn) {echo number_format($userRow->{'bits'});} ?></a></li>
+
             </ul>
           </span>
-          <span style="float:right; display:inline-block;padding-left: 10px;">
+         
             <ul>
               <li><a class="nav" href="/messages/"><i class="fa fa-envelope"></i>
                 <?php
@@ -241,13 +240,12 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           <span> | </span>
           <span>
           </span>
-          <span> | </span>
-          <span>
-            <a class="nav" href="/shop/">Avatar Shop</a>
+     
+          
           </span>
           <span> | </span>
           <span>
-           <a class="nav" href="/forum/">Social Forum</a>
+           <a class="nav" href="/forum/">Subtalks</a>
           </span>
           <span> | </span>
           <span>
@@ -259,10 +257,17 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           </span>
           <span> | </span>
           <span>
+             <a class="nav" href="/createboard/">Create Subtalk</a>
           </span>
           <?php
           if($loggedIn) {
             if($power >= 1) {echo '<span> | </span><span><a class="nav" href="/admin/">Admin'; if ($unapprovedNum > 0) { echo " ($unapprovedNum) ";} echo '</a></span>';}
+          }
+          ?>
+        
+           <?php
+          if($loggedIn) {
+            if($power >= 1) {echo '<span> | </span><span><a class="nav" href="/editboard/">Delete Subtalk'; if ($unapprovedNum > 0) { echo " ($unapprovedNum) ";} echo '</a></span>';}
           }
           ?>
           
@@ -278,12 +283,7 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           </span>
         </span>
       </div>
-      <?php
-    echo '<div style="border: 1px solid #b57500;background-color: #ffa500;color: #fff;text-align:center;padding: 3px;margin-top:5px;">
-The site has not yet finished upgrading. There will be broken links, images, and the site will go down from time to time.<br>
-Do not report these issues, as they will be fixed.
-      </div>';
-      ?>
+
     </div>
 <?php
   if($_SERVER['REMOTE_ADDR'] != '82.21.246.202') { //for working on the site
