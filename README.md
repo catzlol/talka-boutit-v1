@@ -1,27 +1,30 @@
+# Talka-boutit Website Configuration Guide
 
-# talka-boutit
+The Talka-boutit platform is a customized version of the Brick Hill 2017 website, designed to emulate the appearance of a classic forum site.
 
-Talk-aboutit is a modification of the brick hill 2o17 website. Its supposed to resemble an old forum website.
+## Setup Requirements
 
-# Setting up
+To establish Talka-boutit on your web server, ensure that you have the following:
 
-You will need
+- A web host with PHP support
+- PHPMyAdmin installed
+- MySQL database
+- A Functional Braincell
 
-- A web host that supports php
-- PHPMyadmin
-- MYSql
-- A brain
+Talka-boutit runs on serv00 by default. XAMPP has problems, WAMP has not been tested. Drag the files to the public_html folder in domains of the file manager.
 
-Talka-boutit was originally set up in ct8.pl. You may set it up in any hosting service that supports PHP.
+1. **Database Configuration:**
 
-Setup mysql and PHPMyadmin and then download the sql file included.
+   Set up MySQL and PHPMyAdmin, and then download the provided SQL file. Navigate to `SiT_3\config.php` and establish a connection to the database.
 
-Go to SiT_3\config.php and connect the db
+   ```php
+   $conn = mysqli_connect("localhost", "dbusername", "dbpassword", "dbname");
+   ```
 
-  $conn = mysqli_connect( "localhost" , "db name", "db password" , "db login");
+2. **User Permissions Editing:**
 
-# Editing users permissions
+   Access PHPMyAdmin, locate the "Users" tab, and select the user you wish to modify.
 
-In PHPMYADMIN, go to the users tab, and edit the user you want. 
+   - Adjust the user's power level to 6 for complete administrative privileges.
 
-You can set the user's power to 6 for full admin privliges.
+Follow these steps meticulously to ensure a seamless setup and efficient management of Talka-boutit on your chosen hosting platform.
