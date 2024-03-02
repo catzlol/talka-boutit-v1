@@ -1,4 +1,6 @@
 <?php
+
+//Don't use this unless youre not debugging.
  error_reporting(0);
   
 
@@ -8,7 +10,7 @@
 file_put_contents("/home/bricflrb/public_html/SiT_3/connections.txt",$_SERVER['REMOTE_ADDR']."\n", FILE_APPEND | LOCK_EX);
   
 
-  $conn = mysqli_connect( "mysql2.serv00.com" , "m4639_talkdata", "cacacrack1!Ak1" , "m4639_talkaboutit");
+  $conn = mysqli_connect( "host" , "db username", "password" , "db name");
   
   if(!$conn) {
     //include("site/maint.php");
