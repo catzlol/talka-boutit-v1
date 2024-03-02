@@ -133,7 +133,7 @@
           $approvedSQL = "UPDATE `clans` SET `approved`='no' WHERE `id`='$clanID'";
           $approved = $conn->query($approvedSQL);
           if($approved) {
-            move_uploaded_file($imgTmp,"../../storage_subdomain/images/clans/".$clanID.".png");
+            move_uploaded_file($imgTmp,"/images/clans/".$clanID.".png");
           }
         } else {
           echo 'File size must be smaller than 2MB';
@@ -157,7 +157,7 @@
         <h3><?php echo $clanRow['name']; ?></h3>
         <form action="" method="POST" style="margin:10px;" enctype="multipart/form-data">
           <h4>Image:</h4>
-          <img style="width:200px;height:200px;" src="http://storage.brick-hill.com/images/clans/<?php echo $clanID; ?>.png">
+          <img style="width:200px;height:200px;" src="/images/clans/<?php echo $clanID; ?>.png">
           <input type="file" name="image"><br>
           <input type="submit" name="newImage">
         </form>
@@ -241,7 +241,7 @@
       }
       
       function getRank(page, rank) {
-        $("#members").load("http://www.brick-hill.com/clans/edit_members?id=<?php echo $clanID; ?>&rank="+rank+"&page="+page);
+        $("#members").load("/clans/edit_members?id=<?php echo $clanID; ?>&rank="+rank+"&page="+page);
       }
     </script>
   <?php

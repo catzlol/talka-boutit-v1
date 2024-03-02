@@ -1,6 +1,10 @@
+
 <?php
+  
+  
+ //this slide is non functional and will absolutely break the site. Don't edit the loadtime. 
 $load = sys_getloadavg();
-if ($load[0] > 18) {
+if ($load[0] > 6000000) {
 ?>
 <!DOCTYPE html>
   <head>
@@ -26,6 +30,8 @@ if ($load[0] > 18) {
     </div>
   </body>
 </html>
+
+
 
 
 <?php
@@ -231,7 +237,7 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           <span>
           <?php
           if($loggedIn) {
-            echo '<a href="/customize/">Avatar</a>';
+            echo '<a href="/uploadavatars/">Avatar</a>';
           } else {
             echo '<a href="/login/">Avatar</a>';
           }
@@ -259,6 +265,8 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           <span>
              <a class="nav" href="/createboard/">Create Subtalk</a>
           </span>
+        
+        
           <?php
           if($loggedIn) {
             if($power >= 1) {echo '<span> | </span><span><a class="nav" href="/admin/">Admin'; if ($unapprovedNum > 0) { echo " ($unapprovedNum) ";} echo '</a></span>';}
@@ -283,9 +291,28 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
           </span>
         </span>
       </div>
+      
+      
+<?php
+// Fetch the latest announcement from the database
+$sql = "SELECT * FROM site_announcements ORDER BY timestamp DESC LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $announcementText = $row["announcement_text"];
+    // Display the announcement as an alert
+    echo '<div class="announcement">
+            <span class="announcement-text">' . $announcementText . '</span>
+          </div>';
+  
+}
+?>
 
     </div>
 <?php
+  
+  
   if($_SERVER['REMOTE_ADDR'] != '82.21.246.202') { //for working on the site
     //exit;
   }

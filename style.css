@@ -536,3 +536,15 @@ pre br {
   max-width: 60%;
   border-radius: 5px;
 }
+
+.announcement {
+    background-color: orange;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+}
+
+.announcement-text {
+    /* Add any additional styles for the announcement text */
+}

@@ -52,8 +52,8 @@
             else {$thumbnail = 'pending';}
           
             echo '<div id="subsect" style="overflow:auto;">';
-            echo '<div style="width:20%;text-align:center;float:left;"><img style="vertical-align:middle; width:100px; height:100px; margin: 0px 10px 10px 0px;" src="http://storage.brick-hill.com/images/clans/'.$thumbnail.'.png"></div>';
-            echo '<div style="width:20%;text-align:center;float:left;"><a style="color:black;" href="http://www.brick-hill.com/clan?id=' . $group_id . '">' . $searchRow['name'] . '</a></div>';
+            echo '<div style="width:20%;text-align:center;float:left;"><img style="vertical-align:middle; width:100px; height:100px; margin: 0px 10px 10px 0px;" src="/images/clans/'.$thumbnail.'.png"></div>';
+            echo '<div style="width:20%;text-align:center;float:left;"><a style="color:black;" href="/clan?id=' . $group_id . '">' . $searchRow['name'] . '</a></div>';
             echo '<div style="width:45%;text-align:center;float:left;"><span style="padding-left:15px; color:#333; font-size:12px;">' . substr(htmlentities($searchRow['description']),0,100) . str_repeat("...",(strlen(htmlentities($searchRow['description'])) >= 100)) .'</span></div>';
             echo '<div style="width:15%;text-align:center;float:left;"><span style="padding-left:15px; color:#333; font-size:12px; font-weight: bold;">Members: ' . $memCount . '</span></div></div>';
             }

@@ -3,7 +3,6 @@ include('SiT_3/config.php');
 include('SiT_3/header.php');
 
 if (!$loggedIn) {
-    header("Location: index");
     exit();
 }
 
@@ -14,17 +13,21 @@ if (isset($_POST['submit'])) {
         $name = mysqli_real_escape_string($conn, $_POST['name']);
         $description = mysqli_real_escape_string($conn, $_POST['description']);
 
-        // Check if the name starts with 't/'
-        if (substr($name, 0, 2) === 't/') {
+        // Validate forum board name using regular expression
+        if (!preg_match('/^[a-zA-Z0-9\/\-\.\sáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙäëïöüÄËÏÖÜâêîôûÂÊÎÔÛãñõÃÑÕ]+$/', $name)) {
+            $error[] = "Invalid characters in forum board name.";
+        } elseif (substr($name, 0, 2) === 't/') {
             // Append "Made by (user)" to the end of the description
-            $description .= " Made by " . $userRow->username;
+            $description .= " Made by " . htmlspecialchars($userRow->username, ENT_QUOTES, 'UTF-8');
 
             // Insert the new forum board into the database
-            $insertBoardSQL = "INSERT INTO `forum_boards` (`id`, `name`, `description`) VALUES (NULL, '$name', '$description')";
+            $insertBoardSQL = "INSERT INTO `forum_boards` (`id`, `name`, `description`, `userid`) 
+                               VALUES (NULL, '$name', '$description', '$userRow->id')";
             $insertBoard = $conn->query($insertBoardSQL);
 
             if ($insertBoard) {
-                header("Location: index"); // Redirect to the index page or wherever you want
+                ob_clean(); // Clear output buffer
+                header("Location: /"); // Redirect to the index page or wherever you want
                 exit();
             } else {
                 $error[] = "Error creating forum board. Please try again.";
@@ -52,7 +55,7 @@ if (isset($_POST['submit'])) {
             if (!empty($error)) {
                 echo '<div style="background-color:#EE3333;margin:10px;padding:5px;color:white;">';
                 foreach ($error as $errno) {
-                    echo $errno . "<br>";
+                    echo htmlspecialchars($errno, ENT_QUOTES, 'UTF-8') . "<br>";
                 }
                 echo '</div>';
             }
@@ -71,6 +74,7 @@ if (isset($_POST['submit'])) {
                 <li>The forum board name must start with 't/'.</li>
                 <li>Provide a meaningful description for your forum board.</li>
                 <li>Follow community guidelines when creating boards.</li>
+                <li>Allowed characters: a-z, 0-9, /, dashes, periods, and accents.</li>
             </ul>
         </div>
     </div>

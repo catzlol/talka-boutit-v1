@@ -20,10 +20,29 @@ if(isset($_GET['desc']) && $power >= 1) {
   $scrubSQL = "UPDATE `beta_users` SET `description`='[Content Removed]' WHERE `id`='$id'";
   $scrub = $conn->query($scrubSQL);
 }
-if(isset($_GET['name']) && $power >= 1) {
-  $scrubSQL = "UPDATE `beta_users` SET `username`='[Reset $id]' WHERE `id`='$id'";
-  $scrub = $conn->query($scrubSQL);
+if (isset($_GET['name']) && $power >= 1) {
+    // Scrub the username
+    $scrubSQL = "UPDATE `beta_users` SET `username`='[Reset $id]' WHERE `id`='$id'";
+    $scrub = $conn->query($scrubSQL);
+
+    // Delete user's avatar PNG
+    $avatarPath = "images/avatars/{$id}.png";
+    if (file_exists($avatarPath)) {
+        unlink($avatarPath); // Delete the user's avatar file
+    }
+
+    // Copy the default avatar to the user's avatar folder
+    $defaultAvatarPath = 'default.png';
+    $userAvatarPath = "images/avatars/{$id}.png";
+
+    if (copy($defaultAvatarPath, $userAvatarPath)) {
+       
+        exit();
+    } else {
+        $error[] = 'Failed to scrub username and reset avatar.';
+    }
 }
+
 
 $statusReq = mysqli_query($conn,"SELECT * FROM `statuses` WHERE `owner_id`='$id' ORDER BY `id` DESC");
 $statusReqData = mysqli_fetch_assoc($statusReq);
@@ -116,17 +135,16 @@ if($primary > 0){
     }
   }
           
-          $lastonlineTime = strtotime($userRow['last_online']);
-      $lastOnline = time()-$lastonlineTime;
-      
-          if ($lastOnline <= 300) {
-            echo '<span class="online"><i class="fa fa-circle"></i></span>';
-            } else {
-            echo '<span class="offline"><i class="fa fa-circle"></i></span>';
-            }
-            
-            echo '<span style="float: right;margin-left: -20px;margin-top:10px;"><a href="/report?type=user&id='.$userRow['id'].'"><i style="color:#444;font-size:13px;" class="fa fa-flag"></i></a></span>';
-          
+  $lastonlineTime = strtotime($userRow['last_online']);
+$lastOnline = time() - $lastonlineTime;
+
+if ($lastOnline <= 300) {
+    echo '<span class="online" style="color: green;"><i class="fa fa-circle"></i></span>';
+} else {
+    echo '<span class="offline" style="color: red;"><i class="fa fa-circle"></i></span>';
+}
+
+echo '<span style="float: right; margin-left: -20px; margin-top: 10px;"><a href="/report?type=user&id=' . $userRow['id'] . '"><i style="color:#444; font-size:13px;" class="fa fa-flag"></i></a></span>';
           
           ?></h3>
       <?php 
@@ -160,7 +178,7 @@ if($primary > 0){
         <?php
         } else {
           ?>
-        <img src="/images/avatars/<?php echo $userRow['id']; ?>.png?c=<?php echo $userRow['avatar_id']; ?>" style="width: 235px;height: 280px;border:0px;">
+        <img src="/images/avatars/<?php echo $userRow['id']; ?>.png?c=<?php echo $userRow['avatar_id']; ?>" style="width: 200px;height: 200;border:0px;">
           <?php
         }
       } else {
@@ -198,7 +216,7 @@ if($loggedIn) {
             }
           
           } else {
-          echo '<br><a href="/customize"><input type="button" value="Customize"></a><a style="padding-left:5px;" href="/settings"><input type="button" value="Settings"></a>';
+          echo '<br><a style="padding-left:5px;" href="/settings"><input type="button" value="Settings"></a>';
           }
         if($power >= 1 && $userRow['power'] < $power) {
           echo '<br><a href="/ban?id='.$id.'">
@@ -309,23 +327,9 @@ if($loggedIn) {
       <div id="column" style="width:494px; float:right;">
         <div id="box" style="display: inline-block; width:100%; text-align:center;">
           <div id="subsect">
-            <h3>Games</h3>
+            <h3>Games (No longer used)</h3>
           </div>
-          <?php
-          $gamesSQL = "SELECT * FROM `games` WHERE `creator_id`='$id'";
-          $games = $conn->query($gamesSQL);
-          while($gamesRow = $games->fetch_assoc()) {
-            echo '<div id="subsect" style="text-align:left;padding-right: 10px;padding-bottom: 10px;padding-left: 12px;">
-            <a href="/play/set?id='.$gamesRow['id'].'"><h4 style="margin: 4px;">'.$gamesRow['name'].'</h4></a>
-            <h6 style="margin: 4px;">'.$gamesRow['visits'].' Visits</h6>
-            <a href="/play/set?id='.$gamesRow['id'].'"><img width="470px" src="http://storage.brick-hill.com/images/games/'.$gamesRow['id'].'.png"></a>
-            <h5 style="margin: 4px; font-weight: normal;">'.$gamesRow['description'].'</h5>
-          </div>';
-          }
-          if($games->num_rows == 0) {
-            echo '<em>This user has no games</em>';
-          }
-          ?>
+
         </div>
         <div id="box" style="margin-top:10px;display:inline-block; width:100%; text-align:center;">
           
@@ -350,7 +354,7 @@ if($loggedIn) {
                     <div id='friend'>
                         <div style='padding:2px;float: left;'>
                           <a style='color:black;text-decoration:none;' href='/user?id=".$friendRow['id']."' title='".$friendRow['username']."'>
-                          <img src='http://storage.brick-hill.com/images/avatars/".$friendRow['id'].".png?c=".$friendRow['avatar_id']."' id='friendThumb'><br>
+                          <img src='/images/avatars/".$friendRow['id'].".png?c=".$friendRow['avatar_id']."' id='friendThumb'><br>
                           ".$friendUsername."</a>
                         </div>
                     </div>";
@@ -376,22 +380,9 @@ div#friend a {
           </style>
         </div>
       </div>
-      <div id="box" style="float:left; margin-top:10px; padding-bottom:0px; width:100%;overflow: hidden;">
-        <div id="subsect" style="margin-bottom:-1px;text-align:center;">
-          <h3>Crate</h3>
-        </div>
-        <div id="column" style="float:left;margin-right:10px;text-align:center;">
+      
           <?php 
-    $sortByArray = array(
-    "All" => "all",
-    "Hats" => "hat",
-    "Tools" => "tool",
-    "T-Shirts" => "tshirt",
-    "Faces" => "face",
-    "Shirt" => "shirt",
-    "Pants" => "pants",
-    "Heads" => "head"
-    );
+  
     foreach ($sortByArray as $sortByValue => $jsValue) {
     ?>
       <a class="nav" onclick="getPage('<?php echo $jsValue; ?>',0);">

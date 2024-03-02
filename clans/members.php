@@ -27,8 +27,8 @@
 			$userResult = $conn->query($userSQL);
 			$userRow=$userResult->fetch_assoc();
 			echo '<div style="display:inline-block;width:25%">';
-			echo '<img width=80% src="http://storage.brick-hill.com/images/avatars/'.$userID.'.png?c='.$userRow['avatar_id'].'"><br>';
-			echo '<a style="color:#000;" href="http://www.brick-hill.com/user?id='.$userID.'">'.$userRow['username'].'</a>';
+			echo '<img width=80% src="/images/avatars/'.$userID.'.png?c='.$userRow['avatar_id'].'"><br>';
+			echo '<a style="color:#000;" href=/user?id='.$userID.'">'.$userRow['username'].'</a>';
 			echo '</div>';
 		//}
 	}

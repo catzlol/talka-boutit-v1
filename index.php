@@ -1,3 +1,6 @@
+
+
+
 <?php 
 include('SiT_3/config.php');
 include('SiT_3/header.php');
@@ -69,7 +72,7 @@ $gameRow = $findGames->fetch_assoc()
       <div id="column" style="float:left; width:580px;">
         <div id="box" style="width:100%;">
           <div style="margin:20px;float:left;position:relative;width: 165px;">
-            <img style="width:180px" src="http://storage.brick-hill.com/images/avatars/<?php echo $userRow->{'id'}; ?>.png?c=<?php echo $userRow->{'avatar_id'}; ?>">
+            <img style="width:180px" src="/images/avatars/<?php echo $userRow->{'id'}; ?>.png?c=<?php echo $userRow->{'avatar_id'}; ?>">
           </div>
           <form style="margin: 20px 20px 10px 20px; float:left; text-align:left;" action="" method="POST">
             <p class="title" style="font-weight:bold;">Status:</p>
@@ -117,8 +120,8 @@ for($c = 0; $c < 10; $c++) {
     <td style="padding: 8px 0px 0px 8px;background: #f8f9ff;" valign="top">'.str_replace(">","&gt;",str_replace("<","<",$statusRow['body'])).'</td><td style="background: #f8f9ff;font-size: 12.5px;font-style: italic;text-align: right;padding-top: 46px;float: right;padding-right: 5px;">'.$statusRow['date'].'</div>
     <td style="width: 20%; text-align: center;">
     <div style="border-left: 1px solid #b7b7b7;padding: 3px;">
-    <a href="http://www.brick-hill.com/user?id='.$statusRow['owner_id'].'" style="color:#000;text-decoration:none;">
-      <img style="width:40px;" src="http://storage.brick-hill.com/images/avatars/'.$statusRow['owner_id'].'.png?c='.$posterRow['avatar_id'].'"><br>' .$posterRow['username']. '</a>
+    <a href="/user?id='.$statusRow['owner_id'].'" style="color:#000;text-decoration:none;">
+      <img style="width:40px;" src="/images/avatars/'.$statusRow['owner_id'].'.png?c='.$posterRow['avatar_id'].'"><br>' .$posterRow['username']. '</a>
     </div></td>
     </tr>';
 }

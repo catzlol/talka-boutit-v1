@@ -35,7 +35,7 @@
             $nameExists = $conn->query($nameSQL);
             if($nameExists->num_rows == 0) {
               if(isset($_POST['prefix'])) {
-                if($userRow->{'bucks'} >= 25) {
+                if($userRow->{'bucks'} >= 0) {
                   $prefix = mysqli_real_escape_string($conn,$_POST['prefix']);
                   if(strlen($prefix) >= 3 and strlen($prefix) <= 4) {
                     if(ctype_alnum($prefix)) {
@@ -49,7 +49,7 @@
                       $clan = $conn->query($clanSQL);
                       $clanID = $conn->insert_id;
                       
-                      $newMoney = $userRow->{'bucks'}-25;
+                      $newMoney = $userRow->{'bucks'}-0;
                       $newMoneySQL = "UPDATE `beta_users` SET `bucks`='$newMoney' WHERE `id`='$userID'";
                       $newMoneyQ = $conn->query($newMoneySQL);
                       
@@ -66,7 +66,7 @@
                       $addMemberSQL = "INSERT INTO `clans_ranks` (`id`,`group_id`,`power`,`name`,`perm_ranks`,`perm_posts`,`perm_members`) VALUES (NULL ,'$clanID','1','Member','no','no','no')";
                       $addMember = $conn->query($addMemberSQL);
                       
-                      move_uploaded_file($imgTmp,"../../../storage_subdomain/images/clans/".$clanID.".png");
+                      move_uploaded_file($imgTmp,"/images/clans/".$clanID.".png");
                       
                       header("location: /clan?id=".$clanID);
                     } else {

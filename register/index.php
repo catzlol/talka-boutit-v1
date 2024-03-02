@@ -1,9 +1,15 @@
-<?php 
+
+
+<?php
   include('../SiT_3/config.php');
   include('../SiT_3/header.php');
   
-  if($loggedIn) {header("Location: /index"); die();}
   
+
+
+  if($loggedIn) {header("Location: /index"); die();}
+
+
 
     
     
@@ -15,6 +21,8 @@
     $key = mysqli_real_escape_string($conn, $_POST['key']);
     $IP = $_SERVER['REMOTE_ADDR'];
     $curDate = date('Y-m-d');
+    
+
     
     if(substr($username,-1) == " " || substr($username,0,1) == " ") {$error[] = "You cannot include a space at the beginning or end of your username.";}
     
@@ -29,14 +37,17 @@
       $error[] = 'Spaces, periods, hyphens and underscores must be separated.';
     }
 
-
-    
-
+///IP Address banning. Keeps the bad people out.
+$deny = array("111.111.111", "222.222.222", "333.333.333");
+if (in_array ($_SERVER['REMOTE_ADDR'], $deny)) {
+   $error[] = 'Your network has been blocked from creating accounts on Talka-boutit.';
+   
+}
     
     
     if ( $password !== $confirmPassword ) {
       $error[] = 'Passwords do not match!';
-    } 
+    }
     
     $email = mysqli_real_escape_string($conn,$_POST['email']);
     if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -147,7 +158,7 @@
           
         
         $_SESSION['id'] = $userID;
-        header('Location: /customize/?regen');
+        header('Location: /uploadavatars/');
       } else {
         $error[] = 'Database error';
       }

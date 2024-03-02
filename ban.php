@@ -16,33 +16,51 @@ if ($power >= 1) {
             $length = mysqli_real_escape_string($conn, $_POST['length']);
             $offensiveContent = '';
 
+            // Fetch offensive content from forum posts
             if (isset($_POST['forum_post_id']) && is_numeric($_POST['forum_post_id'])) {
                 $forumPostId = mysqli_real_escape_string($conn, $_POST['forum_post_id']);
 
-                // Fetch the forum post details
                 $forumPostSQL = "SELECT title, body, date FROM `forum_threads` WHERE id = '$forumPostId'";
                 $forumPostResult = $conn->query($forumPostSQL);
 
                 if ($forumPostResult && $forumPostResult->num_rows > 0) {
                     $forumPostRow = $forumPostResult->fetch_assoc();
-                    $offensiveContent = 'Title: ' . $forumPostRow['title'] . PHP_EOL .
+                    $offensiveContent .= 'Forum Post - Title: ' . $forumPostRow['title'] . PHP_EOL .
                         'Body: ' . $forumPostRow['body'] . PHP_EOL .
-                        'Date: ' . $forumPostRow['date'];
+                        'Date: ' . $forumPostRow['date'] . PHP_EOL;
                 }
-            } elseif (isset($_POST['subtalk_id']) && is_numeric($_POST['subtalk_id'])) {
+            }
+
+            // Fetch offensive content from subtalks
+            elseif (isset($_POST['subtalk_id']) && is_numeric($_POST['subtalk_id'])) {
                 $subtalkId = mysqli_real_escape_string($conn, $_POST['subtalk_id']);
 
-                // Fetch the subtalk details
                 $subtalkSQL = "SELECT name, description FROM `forum_boards` WHERE id = '$subtalkId'";
                 $subtalkResult = $conn->query($subtalkSQL);
 
                 if ($subtalkResult && $subtalkResult->num_rows > 0) {
                     $subtalkRow = $subtalkResult->fetch_assoc();
-                    $offensiveContent = 'Subtalk Name: ' . $subtalkRow['name'] . PHP_EOL .
-                        'Description: ' . $subtalkRow['description'];
+                    $offensiveContent .= 'Subtalk - Name: ' . $subtalkRow['name'] . PHP_EOL .
+                        'Description: ' . $subtalkRow['description'] . PHP_EOL;
                 }
             }
 
+            // Fetch offensive content from messages
+            elseif (isset($_POST['message_id']) && is_numeric($_POST['message_id'])) {
+                $messageId = mysqli_real_escape_string($conn, $_POST['message_id']);
+
+                $messageSQL = "SELECT title, message, date FROM `messages` WHERE id = '$messageId'";
+                $messageResult = $conn->query($messageSQL);
+
+                if ($messageResult && $messageResult->num_rows > 0) {
+                    $messageRow = $messageResult->fetch_assoc();
+                    $offensiveContent .= 'Message - Title: ' . $messageRow['title'] . PHP_EOL .
+                        'Message: ' . $messageRow['message'] . PHP_EOL .
+                        'Date: ' . $messageRow['date'] . PHP_EOL;
+                }
+            }
+
+            // Include additional offensive content if provided
             $offensiveContent .= isset($_POST['offensive_content']) ? ($_POST['offensive_content'] . PHP_EOL) : '';
 
             $banSQL = "INSERT INTO `moderation` (`id`,`user_id`,`admin_id`,`admin_note`,`issued`,`length`,`active`,`offensive_content`) VALUES (NULL ,'$user','$admin','$note', '$curDate','$length','yes', '$offensiveContent')";
@@ -60,6 +78,14 @@ if ($power >= 1) {
     }
 } else {
     header("location: index");
+}
+
+// Unban functionality
+if (isset($_GET['id']) && isset($_POST['unban'])) {
+    $user = mysqli_real_escape_string($conn, $_GET['id']);
+    $unbanSQL = "UPDATE `moderation` SET `active`='no' WHERE `user_id`='$user'";
+    $unban = $conn->query($unbanSQL);
+    header("Location: index");
 }
 ?>
 
@@ -96,9 +122,17 @@ if ($power >= 1) {
                 <input type="text" name="forum_post_id"><br>
                 <label>Subtalk ID (Optional):</label>
                 <input type="text" name="subtalk_id"><br>
+                <label>Message ID (Optional):</label>
+                <input type="text" name="message_id"><br>
                 <label>Ban Length (Minutes):</label>
                 <input type="text" name="length"><br>
                 <input type="submit" name="submit" value="Ban User">
+            </form>
+
+            <!-- Form for unbanning user -->
+            <form action="" method="POST">
+                <input type="hidden" name="unban" value="1">
+                <input type="submit" value="Remove Ban">
             </form>
 
             <ul>

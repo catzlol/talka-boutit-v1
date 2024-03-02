@@ -56,9 +56,9 @@ if ($banned->num_rows != 0) {
                     <p>&nbsp; The Talka-Boutit team has decided to
                         <?php
                         if ($bannedRow['length'] == 0) {
-                            echo 'warn the account of';
+                            echo 'warn the account';
                         } else {
-                            echo 'block the account of';
+                            echo 'block the account';
                         }
                         ?>
                     </p>
@@ -68,12 +68,12 @@ if ($banned->num_rows != 0) {
                     <div style="padding-left: 10px;">
                         Date: <?php echo gmdate('m/d/Y', strtotime($bannedRow['issued'])); ?> <br>
 
-                        <?php if (!empty($bannedRow['offensive_content'])) { ?>
-                            Offensive Content:<br>
-                            <div class="admin-note">
-                                <?php echo $bannedRow['offensive_content']; ?>
-                            </div>
-                        <?php } ?>
+                     <?php if (!empty(trim($bannedRow['offensive_content']))) { ?>
+    Offensive Content:<br>
+    <div class="admin-note">
+        <?php echo $bannedRow['offensive_content']; ?>
+    </div>
+<?php } ?>
 
                         Moderator Note:<br>
                         <div class="admin-note">

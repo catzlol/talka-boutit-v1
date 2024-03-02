@@ -29,7 +29,7 @@
 
 <body>
 	<head>
-		<title>My Threads - Brick Hill</title>
+		<title>My Threads - Talka-boutit</title>
 	</head>
 	<body>
 		<div id="body">

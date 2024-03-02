@@ -12,7 +12,7 @@
   if($power >= 1) {
     if(isset($_GET['scrub'])) {
       $postID = mysqli_real_escape_string($conn,$_GET['scrub']);
-      $scrubSQL = "UPDATE `forum_posts` SET `body`='[ Content Removed ]' WHERE `id`='$postID'";
+      $scrubSQL = "UPDATE `forum_posts` SET `body`='[ Removed ]' WHERE `id`='$postID'";
       $scrub = $conn->query($scrubSQL);
       header("Location: thread?id=".$threadIDSafe);
     }
@@ -41,6 +41,7 @@
       $delete = $conn->query($deleteSQL);
       header("Location: thread?id=".$threadIDSafe);
     }
+    
   }
   
   $findThreadQuery = "SELECT * FROM `forum_threads` WHERE `id` = '$threadIDSafe'";
@@ -132,9 +133,9 @@
       ':D' => '<img src="/assets/emojis/grin.png"></img>',
 
 
-	// deleting links !!!
-	'goatse.info' => '[ Link Removed ]',
-	'pornhub.com' => '[ Link Removed ]',
+  // deleting links !!!
+  'goatse.info' => '[ Link Removed ]',
+  'pornhub.com' => '[ Link Removed ]',
     );
     
     $bbtext = str_ireplace(array_keys($bbtags), array_values($bbtags), $bbtext);
@@ -174,7 +175,7 @@
   <meta property="og:title" content="<?php echo $threadRow->{'title'} ?>" />
   <meta property="og:description" content="<?php echo $threadRow->{'body'} ?>" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="http://www.brick-hill.com/forum/thread?id=<?php echo $threadID ?>" />
+  <meta property="og:url" content="/forum/thread?id=<?php echo $threadID ?>" />
   </head>
 
     
@@ -198,7 +199,7 @@
       $findCreatorThread = $conn->query($findCreatorThreadSQL);
       $creatorThreadRow = (object) $findCreatorThread->fetch_assoc();
     ?>
-      <meta property="og:image" content="<?php echo 'http://storage.brick-hill.com/images/avatars/'; ?><?php echo $creatorRow->{'id'};?><?php echo ".png?c=";?><?php echo $creatorRow->{'avatar_id'}; ?>" />
+      <meta property="og:image" content="<?php echo '/images/avatars/'; ?><?php echo $creatorRow->{'id'};?><?php echo ".png?c=";?><?php echo $creatorRow->{'avatar_id'}; ?>" />
       <span><p style="color: white;margin:0px;margin-top: -15px;"><a style="color: white;text-decoration:underline;" href="/forum">Forum</a> >> <a style="color: white;text-decoration:underline;"  href="board?id=<?php echo $boardRow->{'id'} ?>"><?php echo $boardRow->{'name'}; ?></a> >> <a style="color: white;text-decoration:underline;" href="thread?id=<?php echo $threadRow->{'id'}; ?>"><?php echo htmlentities($threadRow->{'title'}); ?></a></p></span>
       <div class="thread-title">
         <?php
@@ -217,16 +218,16 @@
       // ok
       
       
-      	  $threadCreator = $creatorRow->{'id'};
+          $threadCreator = $creatorRow->{'id'};
           $bannerSQL = "SELECT * FROM `forum_banners` WHERE `user_id` = '$threadCreator'";
-      	  $banner = $conn->query($bannerSQL);
+          $banner = $conn->query($bannerSQL);
           $bannerRow = (object) $banner->fetch_assoc();
         if($page == 1) {
           echo '<div id="box" style="padding: 5px;border-top:0px;" class="forumPost">
           <div style="width:200px;text-align:center;float:left;">
             <div style="text-align:center" >
             <a href="/user?id='.$creatorRow->{'id'}.'" style="color: #000;">'.$creatorRow->{'username'}.'<br>
-            <img style="width:150px;" src="http://storage.brick-hill.com/images/avatars/'.$creatorRow->{'id'}.'.png?c='.$creatorRow->{'avatar_id'}.'" /></a>
+            <img style="width:150px;" src="/images/avatars/'.$creatorRow->{'id'}.'.png?c='.$creatorRow->{'avatar_id'}.'" /></a>
             </div>';
             //<img src="https://i.imgur.com/'.$bannerRow->{'url'}.'.png">
             //';
@@ -277,6 +278,7 @@
             if($power >= 1) {
               echo '<span><a class="label" href="scrub?id='.$threadID.'">Scrub</a></span>
               <span><a class="label" href="thread?id='.$threadID.'&delete">Delete</a></span>
+                
               <span><a class="label" href="move?id='.$threadID.'">Move</a></span>';
               if($threadRow->{'pinned'} == 'no') {
                 echo '<span><a class="label" href="?pin&id='.$threadID.'">Pin</a></span>';
@@ -313,7 +315,7 @@
             <div style="width:200px;text-align:center;float:left;">
               <div style="text-align:center" >
               <a href="/user?id='.$creatorRow->{'id'}.'" style="color: #000;">'.$creatorRow->{'username'}.'<br>
-              <img style="width:150px;" src="http://storage.brick-hill.com/images/avatars/'.$creatorRow->{'id'}.'.png?c='. $creatorRow->{'avatar_id'} .'" /></a>';
+              <img style="width:150px;" src="/images/avatars/'.$creatorRow->{'id'}.'.png?c='. $creatorRow->{'avatar_id'} .'" /></a>';
           
           if($creatorRow->{'power'} > '0'){
             echo '<br><span style="color: #bf0000;"><i class="fa fa-gavel" aria-hidden="true"></i> Moderator</span><br>';

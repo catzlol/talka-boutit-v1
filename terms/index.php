@@ -47,6 +47,8 @@ include('../SiT_3/header.php');
               <em>This includes hatred, racist, sexist and prejudice remarks.</em></li>
           <li>Do not create accounts that are inappropriate.<br>
               <em>This includes usernames with profanity, or sexual remarks.</em></li>
+             <li>Do not create inappropriate Subtalks.<br>
+              <em>This includes subtalks with profanity, spam, or sexual remarks.</em></li>
           <li>Do not use excessive profanity.<br>
               <em>We like to keep the chat clean. </em></li>
           <li>Do not post material that could be considered spam.<br>

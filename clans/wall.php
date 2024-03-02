@@ -31,7 +31,7 @@
 	while($wallRow = $wall->fetch_assoc()) {
 		if($wallRow['type'] == 'pinned') {$pin = 1;} else {$pin = 0;}
 		echo '<div id="subsect" style="overflow: auto;">
-		<img style="float:left; width:80px;" src="http://storage.brick-hill.com/images/avatars/'.$wallRow['owner_id'].'.png?c='.rand()/*$wallRow['avatar_id']*/.'"><span style="font-size:12px;">'.str_repeat('<i class="fa fa-thumb-tack"></i>',$pin).$wallRow['time'].'</span><br>'. htmlentities ( $wallRow['post'] );
+		<img style="float:left; width:80px;" src="/images/avatars/'.$wallRow['owner_id'].'.png?c='.rand()/*$wallRow['avatar_id']*/.'"><span style="font-size:12px;">'.str_repeat('<i class="fa fa-thumb-tack"></i>',$pin).$wallRow['time'].'</span><br>'. htmlentities ( $wallRow['post'] );
 		if($loggedIn) {
 			if($currentRank['perm_posts'] == 'yes') {
 				if($wallRow['type'] == 'normal') {

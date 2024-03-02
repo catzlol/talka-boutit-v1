@@ -12,7 +12,7 @@
         <div id="subsect">
           <h3>Contact Us</h3>
         </div>
-        <p><span style="font-weight:bold;">Discord server:</span><a href="https://discord.gg/P5cY9Q59SS">https://discord.gg/P5cY9Q59SS</a><br>
+        <p><span style="font-weight:bold;">Email:</span><a href="">Currently unavailable</a><br>
         <em>Please allow our staff up to 5 business days to respond to your email.</em></p>
         <p><span style="font-weight:bold;">Phone:</span><a href="">Currently unavailable</a></p>
       </div>
