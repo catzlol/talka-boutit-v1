@@ -19,11 +19,14 @@ if (isset($_GET['search'])) {
 
 <body>
     <div id="body">
-        <form method="GET" action="">
-            <label for="search">Search Forum Boards:</label>
-            <input type="text" name="search" id="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-            <input type="submit" value="Search">
-        </form>
+	<div id="box" style="text-align:center;margin-bottom:10px;">
+		<div id="subsect">
+			<form action="" method="GET" style="margin:15px;">
+				<input style="width:500px; height:20px;" type="text" name="search" placeholder="I'm looking for..." value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+				<input style="height:24px;" type="submit" value="Submit">
+			</form>
+		</div>
+	</div>
 
         <table width="100%" cellspacing="1" cellpadding="4" border="0" style="background-color:#000;">
             <tbody>

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.10
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: mysql.ct8.pl
--- Generation Time: Mar 24, 2023 at 11:05 PM
--- Server version: 8.0.32
--- PHP Version: 7.3.32
+-- Host: mysql2.serv00.com
+-- Generation Time: Mar 07, 2024 at 12:32 AM
+-- Server version: 8.0.35
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `m34533_TALKBOUT`
+-- Database: `m4639_talkaboutit`
 --
 
 -- --------------------------------------------------------
@@ -239,7 +238,9 @@ CREATE TABLE `forum_banners` (
 CREATE TABLE `forum_boards` (
   `id` int NOT NULL,
   `name` varchar(26) NOT NULL,
-  `description` varchar(128) DEFAULT NULL
+  `description` varchar(128) DEFAULT NULL,
+  `userid` int NOT NULL,
+  `mods` text NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -253,7 +254,8 @@ CREATE TABLE `forum_posts` (
   `author_id` int NOT NULL,
   `thread_id` int NOT NULL,
   `body` text NOT NULL,
-  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `points` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -273,7 +275,8 @@ CREATE TABLE `forum_threads` (
   `deleted` enum('yes','no') NOT NULL DEFAULT 'no',
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `views` int NOT NULL,
-  `latest_post` int NOT NULL
+  `latest_post` int NOT NULL,
+  `points` int NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -437,7 +440,9 @@ CREATE TABLE `moderation` (
   `id` int NOT NULL,
   `user_id` int NOT NULL,
   `admin_id` int NOT NULL,
+  `offensive_content` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `admin_note` text NOT NULL,
+  `ban_content` text NOT NULL,
   `issued` datetime NOT NULL,
   `length` int NOT NULL,
   `active` enum('yes','no') NOT NULL
@@ -509,6 +514,18 @@ CREATE TABLE `shop_items` (
   `zoom` varchar(11) DEFAULT NULL,
   `approved` enum('yes','no','declined') NOT NULL DEFAULT 'no'
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `site_announcements`
+--
+
+CREATE TABLE `site_announcements` (
+  `id` int NOT NULL,
+  `announcement_text` text,
+  `timestamp` timestamp NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 -- --------------------------------------------------------
 
@@ -784,6 +801,12 @@ ALTER TABLE `shop_items`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `site_announcements`
+--
+ALTER TABLE `site_announcements`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `special_sellers`
 --
 ALTER TABLE `special_sellers`
@@ -995,6 +1018,12 @@ ALTER TABLE `reports`
 -- AUTO_INCREMENT for table `shop_items`
 --
 ALTER TABLE `shop_items`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `site_announcements`
+--
+ALTER TABLE `site_announcements`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --

@@ -325,12 +325,6 @@ if($loggedIn) {
         </div>
       </div>
       <div id="column" style="width:494px; float:right;">
-        <div id="box" style="display: inline-block; width:100%; text-align:center;">
-          <div id="subsect">
-            <h3>Games (No longer used)</h3>
-          </div>
-
-        </div>
         <div id="box" style="margin-top:10px;display:inline-block; width:100%; text-align:center;">
           
           <?php

@@ -1,4 +1,3 @@
-
 <?php
   
   
@@ -242,12 +241,6 @@ $unapprovedNum = $shopUnapprovedAssets->num_rows;
             echo '<a href="/login/">Avatar</a>';
           }
           ?>
-          </span>
-          <span> | </span>
-          <span>
-          </span>
-     
-          
           </span>
           <span> | </span>
           <span>

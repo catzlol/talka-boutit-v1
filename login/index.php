@@ -75,7 +75,7 @@
         </div>
         <div id="column" style="width:77%;float:right;">
           <div id="box">
-            <h3>Talka-boutit. The free forum service!</h3>
+            <h3>Talka-boutit, the free forum service!</h3>
             
             <h4>Please login to your account. If you don't have an account, create one!</h4>
             <h5></h5>

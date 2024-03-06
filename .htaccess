@@ -76,9 +76,9 @@ ErrorDocument 404 "/assets/clans/1.png"
 
 
 
-ErrorDocument 404 https://talka-boutit.xyz/404
+ErrorDocument 404 404.php
 
-ErrorDocument 403 https://talka-boutit.xyz/403
+ErrorDocument 403 403.php
 
 
 
