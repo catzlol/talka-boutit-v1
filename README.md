@@ -1,7 +1,6 @@
 # Talka-boutit Website Configuration Guide
 
-The Talka-boutit platform is a customized version of the Brick Hill 2017 website, designed to emulate the appearance of a classic forum site.
-
+I am no longer working on this version, the site will be remade. Effective 4/6/2024
 ## Setup Requirements
 
 To establish Talka-boutit on your web server, ensure that you have the following:
